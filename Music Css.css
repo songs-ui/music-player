@@ -130,15 +130,15 @@ body {
     box-shadow: 
       inset 4px 4px 8px #262a30, 
       inset -4px -4px 8px #262a30,
-     0 5px 5px rgba(29, 185, 84, 0.8),   /* Spotify Green outer glow (bright) */
-      0 30px 5px rgba(29, 185, 84, 0.4);  /* Spotify Green outer glow (dim) */
+     0 1px 1px rgba(29, 185, 84, 0.8),   /* Spotify Green outer glow (bright) */
+      0 15px 3px rgba(29, 185, 84, 0.4);  /* Spotify Green outer glow (dim) */
   }
   50% {
     box-shadow: 
       inset 4px 4px 8px #262a30, 
       inset -4px -4px 8px #262a30,
-      0 15px 15px rgba(29, 185, 84, 0.8),  /* Spotify Green outer glow */
-      0 40px 10px rgba(29, 185, 84, 0.4); 
+      0 2px 2px rgba(29, 185, 84, 0.8),  /* Spotify Green outer glow */
+      0 5px 5px rgba(29, 185, 84, 0.4); 
   }
 }
 
@@ -154,8 +154,8 @@ body {
   box-shadow: 
     inset 4px 4px 8px #262a30, 
     inset -4px -4px 8px #262a30,
-    0 5px 5px rgba(29, 185, 84, 0.8),  /* Spotify Green outer glow */
-      0 30px 5px rgba(29, 185, 84, 0.4); 
+    0 1px 1px rgba(29, 185, 84, 0.8),  /* Spotify Green outer glow */
+      0 10px 3px rgba(29, 185, 84, 0.4); 
   animation: glow 1s infinite alternate;
 }
 
@@ -170,14 +170,15 @@ body {
 }
 
 .search-bar {
-  
-  margin-top:60px; /* Removed unnecessary margins */
+  margin-top: 60px; /* Removed unnecessary margins */
   width: 93%; /* Allow dynamic width */
+  position: relative; /* Ensure the search-clear button can be positioned inside */
 }
 
 .search-bar input {
-  width: 90%;
+  width: 90%; /* Ensure input takes up the full width of the container */
   padding: 15px;
+  padding-right: 40px; /* Add extra space on the right for the clear button */
   border-radius: 16px;
   border: none;
   outline: none;
@@ -186,6 +187,55 @@ body {
   font-size: 16px;
   box-shadow: inset 4px 4px 8px #14161a, inset -4px -4px 8px #262a30;
 }
+
+/* Style for the search clear button */
+.search-clear {
+  background-color: #29b954; /* Spotify green color */
+  color: white;
+  font-size: 20px;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 50%;
+  cursor: pointer;
+  position: absolute;
+  right: 10px; /* Positioned inside the input field */
+  top: 50%;
+  transform: translateY(-50%); /* Vertically center the button */
+  display: none; /* Initially hidden */
+  transition: background-color 0.2s ease;
+}
+
+/* Show the clear button when there is text in the search bar */
+.search-bar input:not(:placeholder-shown) + .search-clear {
+  display: block;
+}
+
+/* Hover effect for the clear button */
+.search-clear:hover {
+  background-color: #2a9e48; /* Darker shade on hover */
+}
+
+/* Focus state for the search input */
+.search-bar input:focus {
+  border-color: #29b954; /* Green border when focused */
+}
+
+/* Style for play/pause button (example, adjust as necessary) */
+.play-button {
+  background-color: #f06262;
+  color: white;
+  font-size: 18px;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+/* Hover effect for play/pause button */
+.play-button:hover {
+}
+
 
 .song-list {
   position: relative;
