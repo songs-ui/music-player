@@ -23,8 +23,10 @@
       <div class="logo">Music App</div>
     </div>
     <div class="search-bar">
-      <input type="text" placeholder="Search for a song...">
-    </div>
+  <input type="text" placeholder="Search for a song..." id="search-input">
+  <button class="search-clear" id="clear-btn" style="display: none;">&#10006;</button>
+</div>
+
     <div class="sort-dropdown">
       <label for="sort"> </label>
       <select id="sort" onchange="sortSongs()">
