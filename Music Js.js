@@ -9,10 +9,14 @@ const songs = [
 
 let activePlayer = null;
 let currentHowl = null;
+let likesPerSession = {}; // Track likes per session for each song
 
 document.addEventListener("DOMContentLoaded", () => {
   const songList = document.querySelector(".song-list");
+  const searchInput = document.querySelector(".search-bar input");
+  const searchClearButton = document.querySelector(".search-clear");
 
+  // Function to render the songs
   function renderSongs(songs) {
     songList.innerHTML = ''; // Clear the existing songs
     songs.forEach((song, index) => {
@@ -53,14 +57,28 @@ document.addEventListener("DOMContentLoaded", () => {
     renderSongs(songs); // Re-render the sorted songs
   };
 
-  function likeSong(index) {
+  // Function to like a song
+  window.likeSong = function(index) {
     const likeCountSpan = document.getElementById(`like-count-${index}`);
     let likeCount = parseInt(likeCountSpan.textContent, 10);
-    likeCount += 1;
-    likeCountSpan.textContent = likeCount;
-    songs[index].likes = likeCount; // Update the like count in the song array
-  }
 
+    // Initialize the like count for the song if it doesn't exist yet
+    if (!likesPerSession[index]) {
+      likesPerSession[index] = 0;
+    }
+
+    // Ensure the user can only like the song up to 5 times
+    if (likesPerSession[index] < 5) {
+      likesPerSession[index] += 1; // Increment likes for the current session
+      likeCount += 1;
+      likeCountSpan.textContent = likeCount;
+      songs[index].likes = likeCount; // Update the like count in the song array
+    } else {
+      alert("You've already liked this song 5 times in this session!");
+    }
+  };
+
+  // Function to toggle the audio player
   window.togglePlayer = function(index) {
     const player = document.getElementById(`player-${index}`);
     const playButton = document.querySelector(`#song-${index} .play-button`);
@@ -82,4 +100,22 @@ document.addEventListener("DOMContentLoaded", () => {
       currentHowl.play();
     }
   };
+
+  // Search functionality
+  searchInput.addEventListener("input", () => {
+    const query = searchInput.value.toLowerCase();
+    const filteredSongs = songs.filter(song => 
+      song.title.toLowerCase().includes(query) || 
+      song.artist.toLowerCase().includes(query)
+    );
+    renderSongs(filteredSongs); // Re-render the filtered songs
+    searchClearButton.style.display = query.length > 0 ? 'block' : 'none'; // Show 'X' if there's input
+  });
+
+  // Clear search input when 'X' is clicked
+  searchClearButton.addEventListener("click", () => {
+    searchInput.value = '';
+    searchClearButton.style.display = 'none';
+    renderSongs(songs); // Re-render all songs
+  });
 });
