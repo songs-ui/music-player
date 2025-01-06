@@ -49,16 +49,16 @@ body {
   0%, 100% {
     box-shadow: 
       inset 4px 4px 8px #262a30, 
-      inset -4px -4px 8px #f06262,
-      0 20px 20px rgba(31, 35, 41, 0.8), 
-      0 40px 10px rgba(31, 35, 41, 0.6);
+      inset -4px -4px 8px #262a30,
+     0 5px 5px rgba(29, 185, 84, 0.8),   /* Spotify Green outer glow (bright) */
+      0 30px 5px rgba(29, 185, 84, 0.4);  /* Spotify Green outer glow (dim) */
   }
   50% {
     box-shadow: 
       inset 4px 4px 8px #262a30, 
-      inset -4px -4px 8px #f06262,
-      0 30px 6px rgba(31, 35, 41, 1), 
-      0 50px 15px rgba(31, 35, 41, 0.8);
+      inset -4px -4px 8px #262a30,
+      0 15px 15px rgba(29, 185, 84, 0.8),  /* Spotify Green outer glow */
+      0 40px 10px rgba(29, 185, 84, 0.4); 
   }
 }
 
@@ -73,10 +73,10 @@ body {
   margin: 0 auto;
   box-shadow: 
     inset 4px 4px 8px #262a30, 
-    inset -4px -4px 8px #f06262,
-    0 0 20px 4px rgba(31, 35, 41, 0.8), 
-    0 0 40px 10px rgba(31, 35, 41, 0.6);
-  animation: glow 2s infinite alternate;
+    inset -4px -4px 8px #262a30,
+    0 5px 5px rgba(29, 185, 84, 0.8),  /* Spotify Green outer glow */
+      0 30px 5px rgba(29, 185, 84, 0.4); 
+  animation: glow 1s infinite alternate;
 }
 
 .logo {
