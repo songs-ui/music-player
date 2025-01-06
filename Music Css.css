@@ -8,23 +8,23 @@ body {
   flex-direction: column;
   align-items: center;
 }
-.sort-dropdown {
-  margin-top: 15px;
-}
-.controls {
-  justify-content: flex-start; /* Adjust alignment */
-  gap: 15px; /* Add spacing between the search bar and dropdown */
-  width: 100%;
-  max-width: 800px; /* Optional: restrict maximum width */
-  margin: 20px auto; /* Center the controls horizontally */
-}
 
 .sort-dropdown {
-  flex-shrink: 0; /* Prevent the dropdown from shrinking */
+  margin-top: 10px; /* Removed unnecessary margin */
 }
+
+.controls {
+  display: flex; /* Arrange elements in a horizontal row */
+  justify-content: space-between; /* Align search bar to the left and dropdown to the right */
+  align-items: center; /* Align vertically in the same line */
+  width: 90%; /* Maintain alignment with other elements */
+  max-width: 800px; /* Restrict maximum width */
+  margin: 20px auto; /* Center horizontally */
+}
+
+
 
 #sort {
- 
   padding: 10px;
   background-color: #1f2329;
   border-radius: 8px;
@@ -32,9 +32,9 @@ body {
   border: none;
   box-shadow: inset 4px 4px 8px #14161a, inset -4px -4px 8px #262a30;
   cursor: pointer;
-  margin-left: 290%;
-  margin-top: 0%;
+  margin: 0; /* Removed unnecessary margins */
 }
+
 .header {
   width: 100%;
   max-width: 800px;
@@ -90,15 +90,13 @@ body {
 }
 
 .search-bar {
-  flex: 1;
-  width: 40%;
-  margin-top: 40px;
-  margin-bottom: 0%;
-  margin-right: 60%;
+  
+  margin-top:60px; /* Removed unnecessary margins */
+  width: 93%; /* Allow dynamic width */
 }
 
 .search-bar input {
-  width: 100%;
+  width: 90%;
   padding: 15px;
   border-radius: 16px;
   border: none;
@@ -192,9 +190,17 @@ body {
   justify-content: center;
   color: #f06262;
 }
-@media (max-width: 600px) {
 
-  .search-bar, .sort-list {
-    width: 100%;
+@media (max-width: 600px) {
+  .controls {
+    flex-direction: column; /* Stack elements vertically */
+    align-items: stretch; /* Make them full-width */
+  }
+
+  .search-bar,
+  .sort-dropdown {
+    width: 92%; /* Full width on mobile */
+    margin-bottom: 0px; /* Add spacing between stacked elements */
+    margin-top: 10px;
   }
 }
