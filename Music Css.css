@@ -1,13 +1,93 @@
 body {
   font-family: 'Arial', sans-serif;
-  background-color: #1c1e22;
-  color: #e0e0e0;
+  background-color: black;
   margin: 0;
   padding: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
+  position: relative;
+  overflow: hidden;
+  height: 100vh;
 }
+
+@keyframes particleMovement {
+  0% {
+    opacity: 0.5;
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: translate(150px, 150px) scale(1.5);
+  }
+  100% {
+    opacity: 0.5;
+    transform: translate(-150px, -150px) scale(1);
+  }
+}
+
+.particle {
+  position: absolute;
+  width: 20px; /* Bigger particles */
+  height: 20px; /* Bigger particles */
+  background-color: rgba(29, 185, 84, 0.8); /* Golden color */
+  border-radius: 50%;
+  animation: particleMovement 5s ease-in-out infinite;
+  pointer-events: none; /* Prevent particles from interfering with user interactions */
+  z-index: -1; /* Keep particles behind content */
+}
+
+.particle:nth-child(odd) {
+  animation-duration: 6s;
+  animation-delay: 0.2s;
+}
+
+.particle:nth-child(even) {
+  animation-duration: 7s;
+  animation-delay: 0.4s;
+}
+
+.particle:nth-child(1) {
+  top: 10%;
+  left: 20%;
+}
+
+.particle:nth-child(2) {
+  top: 30%;
+  left: 40%;
+}
+
+.particle:nth-child(3) {
+  top: 50%;
+  left: 60%;
+}
+
+.particle:nth-child(4) {
+  top: 70%;
+  left: 80%;
+}
+
+.particle:nth-child(5) {
+  top: 80%;
+  left: 10%;
+}
+
+.particle:nth-child(6) {
+  top: 60%;
+  left: 30%;
+}
+
+.particle:nth-child(7) {
+  top: 20%;
+  left: 70%;
+}
+
+.particle:nth-child(8) {
+  top: 90%;
+  left: 50%;
+}
+
+/* Add more particles as needed */
 
 .sort-dropdown {
   margin-top: 10px; /* Removed unnecessary margin */
