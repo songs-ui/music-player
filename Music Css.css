@@ -39,10 +39,12 @@ body {
   animation: particleMovement 5s ease-in-out infinite;
   pointer-events: none; /* Prevent particles from interfering with user interactions */
   z-index: -1; /* Keep particles behind content */ /* Green glow */
+  opacity: 0.5; /* Set lower opacity */
+  transform: translate(-50%, -50%); /* Keep it centered */
 }
 
 .particle::before {
-  content: "🎶"; /* Default to music note emoji */
+  content: "🎶"; /* Music note emoji */
   font-size: 24px; /* Increase the size of the emoji */
 }
 
@@ -56,102 +58,25 @@ body {
   animation-delay: 0.4s;
 }
 
-.particle:nth-child(1) {
-  top: 10%;
-  left: 20%;
-  content: '🎵'; /* Music emoji */
-}
+/* Adjust each particle for better random placement */
+.particle:nth-child(1) { top: 10%; left: 15%; }
+.particle:nth-child(2) { top: 25%; left: 30%; }
+.particle:nth-child(3) { top: 50%; left: 50%; }
+.particle:nth-child(4) { top: 70%; left: 20%; }
+.particle:nth-child(5) { top: 80%; left: 85%; }
+.particle:nth-child(6) { top: 40%; left: 75%; }
+.particle:nth-child(7) { top: 60%; left: 10%; }
+.particle:nth-child(8) { top: 90%; left: 60%; }
 
-.particle:nth-child(2) {
-  top: 30%;
-  left: 40%;
-  content: '🎶'; /* Music note emoji */
-}
-
-.particle:nth-child(3) {
-  top: 50%;
-  left: 60%;
-  content: '🎵'; /* Music emoji */
-}
-
-.particle:nth-child(4) {
-  top: 70%;
-  left: 80%;
-  content: '🎶'; /* Music note emoji */
-}
-
-.particle:nth-child(5) {
-  top: 80%;
-  left: 10%;
-  content: '🎵'; /* Music emoji */
-}
-
-.particle:nth-child(6) {
-  top: 60%;
-  left: 30%;
-  content: '🎶'; /* Music note emoji */
-}
-
-.particle:nth-child(7) {
-  top: 20%;
-  left: 70%;
-  content: '🎵'; /* Music emoji */
-}
-
-.particle:nth-child(8) {
-  top: 90%;
-  left: 50%;
-  content: '🎶'; /* Music note emoji */
-}
-
-/* Additional particles (9-16) */
-.particle:nth-child(9) {
-  top: 20%;
-  left: 80%;
-  content: '🎶'; /* Music note emoji */
-}
-
-.particle:nth-child(10) {
-  top: 40%;
-  left: 10%;
-  content: '🎵'; /* Music emoji */
-}
-
-.particle:nth-child(11) {
-  top: 60%;
-  left: 50%;
-  content: '🎶'; /* Music note emoji */
-}
-
-.particle:nth-child(12) {
-  top: 80%;
-  left: 20%;
-  content: '🎵'; /* Music emoji */
-}
-
-.particle:nth-child(13) {
-  top: 30%;
-  left: 70%;
-  content: '🎶'; /* Music note emoji */
-}
-
-.particle:nth-child(14) {
-  top: 50%;
-  left: 90%;
-  content: '🎵'; /* Music emoji */
-}
-
-.particle:nth-child(15) {
-  top: 70%;
-  left: 40%;
-  content: '🎶'; /* Music note emoji */
-}
-
-.particle:nth-child(16) {
-  top: 90%;
-  left: 60%;
-  content: '🎵'; /* Music emoji */
-}
+/* Add more randomized positions for the new particles */
+.particle:nth-child(9) { top: 30%; left: 90%; }
+.particle:nth-child(10) { top: 60%; left: 40%; }
+.particle:nth-child(11) { top: 80%; left: 10%; }
+.particle:nth-child(12) { top: 20%; left: 60%; }
+.particle:nth-child(13) { top: 50%; left: 80%; }
+.particle:nth-child(14) { top: 40%; left: 30%; }
+.particle:nth-child(15) { top: 70%; left: 90%; }
+.particle:nth-child(16) { top: 90%; left: 50%; }
 
 .invisible-ball {
   position: absolute;
@@ -162,16 +87,17 @@ body {
   border-radius: 50%;
   transform: translate(-50%, 0);
   transition: left 0.1s ease;
+  opacity: 0; /* Set opacity to 0 so it's fully invisible */
 }
 
 @keyframes invisibleBallAnimation {
   0%, 100% {
     transform: scale(0.1) translate(0, 0);
-    opacity: 0;
+    opacity: 0; /* Ensure it remains invisible */
   }
   50% {
     transform: scale(1.5) translate(200px, 200px);
-    opacity: 0.5;
+    opacity: 0.5; /* Optional if you want the ball to become semi-visible at mid-point */
   }
 }
 
@@ -342,7 +268,20 @@ body {
   flex-direction: column;
   gap: 10px;
   box-shadow: inset 4px 4px 8px #14161a, inset -4px -4px 8px #262a30;
+  cursor: pointer;
+  transition: background 0.3s ease;
 }
+
+.song-item:hover {
+  background: #2a2e35;
+}
+
+.song-item img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 12px;
+}
+
 
 .song-header {
   display: flex;
