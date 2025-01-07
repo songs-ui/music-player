@@ -237,7 +237,25 @@ body {
 .play-button:hover {
 }
 
+ .song-list-container {
+  width: 100%;
+  max-width: 1200px; /* Max width for large screens */
+  margin-left: auto; /* Center horizontally */
+  margin-right: auto; /* Center horizontally */
+  padding: 0 5%; /* Add padding on both sides */
+  box-sizing: border-box; /* Prevent overflow */
+  overflow-x: hidden; /* Prevent horizontal scroll */
+}
 
+/* The song list should take up the full width within the container */
+.song-list {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px; /* Space between songs */
+  overflow-x: hidden; /* Prevent horizontal scrolling */
+}
 .song-list {
   position: relative;
   width: 90%;
@@ -250,7 +268,7 @@ body {
   background: #1f2329;
   border-radius: 16px;
   padding: 15px;
-  margin: 10px 0;
+  margin-right: 30px 0px;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -324,7 +342,7 @@ body {
   color: #f06262;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 768px) {
   .controls {
     flex-direction: column; /* Stack elements vertically */
     align-items: center; /* Make them full-width */
@@ -333,6 +351,29 @@ body {
     margin: 10px auto 10px 20px; /* Adjusted top margin to bring it closer to the song items and move it a bit to the right */
 
  }
+
+    .song-list-container {
+    padding: 0 10px; /* Padding for mobile */
+    width: 100%; /* Full width for mobile */
+  }
+
+  /* Prevent horizontal scroll on body */
+  body, html {
+    overflow-x: hidden;
+  }
+  
+  /* Adjust song-item for mobile */
+  .song-item {
+    width: 100%; /* Full width for song items */
+    margin-left: 0; /* No margin to the left */
+    margin-right: 0; /* No margin to the right */
+  }
+}
+  /* Ensure no horizontal scroll on small screens */
+  body, html {
+    overflow-x: hidden; /* Disable horizontal scroll */
+  }
+}
 
 
   .search-bar,
@@ -347,6 +388,7 @@ body {
     width: 90%; /* Decrease the width for smaller screens */
     padding: 10px;
   }
+ 
 
   .song-item {
     width: 90%; /* Full width on smaller screens */
