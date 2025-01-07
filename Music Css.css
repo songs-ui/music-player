@@ -319,25 +319,31 @@ body {
 }
 
 .progress-container {
-  width: 90%;
-  height: 5px;
+  width: 80%; /* Updated to make the progress bar 80% width */
+  height: 8px; /* Adjusted height */
   background: #333;
   position: relative;
   cursor: pointer;
+  margin-right: 10px; /* Added gap between progress bar and like button */
 }
 
 .progress-bar {
   width: 0%;
   height: 100%;
   background: #f06262;
-  transition: width 0.1s linear;
+  transition: width 0.0s linear;
+  margin-top: 0px;
 }
-
 
 .like-button {
   position: relative;
   justify-content: center;
   color: #f06262;
+  width: 40px;
+  height: 40px;
+  right: 5px; /* Right align the like button inside the progress bar */
+  top: 50%; /* Vertically center it */
+  transform: translateY(-50%); /* Adjust vertical alignment */
 }
 
 /* General styling for body and html to avoid overflow */
@@ -382,13 +388,10 @@ html, body {
     margin-left: 0; /* No margin to the left */
     margin-right: 0; /* No margin to the right */
   }
-}
   /* Ensure no horizontal scroll on small screens */
   body, html {
     overflow-x: hidden; /* Disable horizontal scroll */
   }
-}
-
 
   .search-bar,
   .sort-dropdown {
