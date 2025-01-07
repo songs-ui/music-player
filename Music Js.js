@@ -7,6 +7,17 @@ const songs = [
   { title: "Stay", artist: "Justin Bieber", src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3", likes: 18, date: "2022-07-14" },
 ];
 
+// Generate 50 test songs
+for (let i = 1; i <= 50; i++) {
+  songs.push({
+    title: `Test Song ${i}`,
+    artist: `Test Artist ${i}`,
+    src: `https://www.soundhelix.com/examples/mp3/SoundHelix-Song-${i % 16 + 1}.mp3`, // Cycle through 16 example sources
+    likes: Math.floor(Math.random() * 100), // Random likes between 0 and 99
+    date: `202${Math.floor(Math.random() * 5) + 1}-${String(Math.floor(Math.random() * 12) + 1).padStart(2, "0")}-${String(Math.floor(Math.random() * 28) + 1).padStart(2, "0")}` // Random date between 2021-2025
+  });
+}
+
 let activePlayer = null;
 let currentHowl = null;
 let likesPerSession = {};
@@ -87,7 +98,6 @@ document.addEventListener("DOMContentLoaded", () => {
       if (currentHowl) currentHowl.pause();
       songProgress[index] = currentHowl.seek();
       activePlayer = null;
-      progressBall.style.display = "none";
     } else {
       player.style.display = "flex";
       playButton.textContent = "II";
@@ -117,50 +127,41 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       updateProgress();
-      progressBall.style.display = "block";
     }
   };
 
- function startDrag(index, event) {
-  isDragging = true;
-  dragProgress(index, event); // Initialize the drag
-}
+  window.startDrag = function (index, event) {
+    isDragging = true;
+    dragProgress(index, event); // Initialize the drag
+  };
 
+  window.dragProgress = function (index, event) {
+    if (!isDragging) return;
 
-function dragProgress(index, event) {
-  if (!isDragging) return;
+    const player = document.getElementById(`player-${index}`);
+    const progressContainer = player.querySelector(".progress-container");
+    const progressBar = progressContainer.querySelector(".progress-bar");
+    const progressBall = progressContainer.querySelector(".progress-ball");
+    const rect = progressContainer.getBoundingClientRect();
 
-  const player = document.getElementById(`player-${index}`);
-  const progressContainer = player.querySelector(".progress-container");
-  const progressBar = progressContainer.querySelector(".progress-bar");
-  const progressBall = progressContainer.querySelector(".progress-ball");
-  const rect = progressContainer.getBoundingClientRect();
+    const clientX = event.clientX || (event.touches && event.touches[0].clientX);
 
-  const clientX = event.clientX || (event.touches && event.touches[0].clientX);
+    const percentage = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
 
-  // Calculate the percentage (clamped between 0 and 1)
-  const percentage = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
+    progressBar.style.width = `${percentage * 100}%`;
+    progressBall.style.left = `${percentage * 100}%`;
 
-  // Update the progress bar and ball positions visually
-  progressBar.style.width = `${percentage * 100}%`;
-  progressBall.style.left = `${percentage * 100}%`;
+    if (currentHowl) {
+      const newTime = percentage * currentHowl.duration();
+      currentHowl.seek(newTime);
+    }
+  };
 
-  // Update the song position (seek) only during dragging
-  if (currentHowl) {
-    const newTime = percentage * currentHowl.duration();
-    currentHowl.seek(newTime);
-  }
-}
-
-function endDrag(index, event) {
-  if (!isDragging) return;
-  isDragging = false;
-
-  // Perform a final update for the progress bar and audio position
-  dragProgress(index, event);
-}
-
-
+  window.endDrag = function (index, event) {
+    if (!isDragging) return;
+    isDragging = false;
+    dragProgress(index, event);
+  };
 
   window.likeSong = function (index) {
     const likeCountSpan = document.getElementById(`like-count-${index}`);
