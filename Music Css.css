@@ -396,14 +396,25 @@ html, body {
     font-size: 12px; /* Adjust artist name font size */
   }
 
-  .play-button,
-  .like-button {
-    width: 35px; /* Smaller buttons for mobile */
+  .play-button {
+    width: 35px;
     height: 35px;
-    font-size: 14px; /* Smaller button text */
+    font-size: 16px;
   }
 
-  .search-bar input {
-    font-size: 14px; /* Adjust input text size */
+  .like-button {
+    width: 35px;
+    height: 35px;
+  }
+
+  .progress-container {
+    width: 90%;
+    margin-right: 0;
   }
 }
+@media screen and (max-width: 600px) {
+  .search-bar input {
+    width: 100%; /* Ensure search bar takes full width */
+  }
+}
+
