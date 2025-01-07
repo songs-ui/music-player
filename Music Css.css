@@ -10,7 +10,6 @@ body {
   overflow: auto; /* Enable scrolling */
   overflow-y: auto;
 }
-
 @keyframes particleMovement {
   0% {
     opacity: 0.3; /* Lower opacity for better performance */
@@ -28,13 +27,22 @@ body {
 
 .particle {
   position: absolute;
-  width: 15px; /* Smaller particles */
-  height: 15px; /* Smaller particles */
-  background-color: rgba(29, 185, 84, 0.6); /* Slightly more transparent for efficiency */
-  border-radius: 50%;
+  width: 25px; /* Adjust size to fit emoji */
+  height: 25px; /* Adjust size to fit emoji */
+  background-color: transparent; /* No background, using emoji */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 20px; /* Adjust emoji size */
+  color: #1DB954; /* Spotify Green color */
   animation: particleMovement 5s ease-in-out infinite;
   pointer-events: none; /* Prevent particles from interfering with user interactions */
-  z-index: -1; /* Keep particles behind content */
+  z-index: -1; /* Keep particles behind content */ /* Green glow */
+}
+
+.particle::before {
+  content: "🎶"; /* Default to music note emoji */
+  font-size: 24px; /* Increase the size of the emoji */
 }
 
 .particle:nth-child(odd) {
@@ -50,42 +58,100 @@ body {
 .particle:nth-child(1) {
   top: 10%;
   left: 20%;
+  content: '🎵'; /* Music emoji */
 }
 
 .particle:nth-child(2) {
   top: 30%;
   left: 40%;
+  content: '🎶'; /* Music note emoji */
 }
 
 .particle:nth-child(3) {
   top: 50%;
   left: 60%;
+  content: '🎵'; /* Music emoji */
 }
 
 .particle:nth-child(4) {
   top: 70%;
   left: 80%;
+  content: '🎶'; /* Music note emoji */
 }
 
 .particle:nth-child(5) {
   top: 80%;
   left: 10%;
+  content: '🎵'; /* Music emoji */
 }
 
 .particle:nth-child(6) {
   top: 60%;
   left: 30%;
+  content: '🎶'; /* Music note emoji */
 }
 
 .particle:nth-child(7) {
   top: 20%;
   left: 70%;
+  content: '🎵'; /* Music emoji */
 }
 
 .particle:nth-child(8) {
   top: 90%;
   left: 50%;
+  content: '🎶'; /* Music note emoji */
 }
+
+/* Additional particles (9-16) */
+.particle:nth-child(9) {
+  top: 20%;
+  left: 80%;
+  content: '🎶'; /* Music note emoji */
+}
+
+.particle:nth-child(10) {
+  top: 40%;
+  left: 10%;
+  content: '🎵'; /* Music emoji */
+}
+
+.particle:nth-child(11) {
+  top: 60%;
+  left: 50%;
+  content: '🎶'; /* Music note emoji */
+}
+
+.particle:nth-child(12) {
+  top: 80%;
+  left: 20%;
+  content: '🎵'; /* Music emoji */
+}
+
+.particle:nth-child(13) {
+  top: 30%;
+  left: 70%;
+  content: '🎶'; /* Music note emoji */
+}
+
+.particle:nth-child(14) {
+  top: 50%;
+  left: 90%;
+  content: '🎵'; /* Music emoji */
+}
+
+.particle:nth-child(15) {
+  top: 70%;
+  left: 40%;
+  content: '🎶'; /* Music note emoji */
+}
+
+.particle:nth-child(16) {
+  top: 90%;
+  left: 60%;
+  content: '🎵'; /* Music emoji */
+}
+
 
 .sort-dropdown {
   margin-top: 10px; /* Removed unnecessary margin */
@@ -417,4 +483,3 @@ html, body {
     width: 100%; /* Ensure search bar takes full width */
   }
 }
-
