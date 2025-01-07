@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const sortSelect = document.querySelector("#sort");
 
   function renderSongs(songsToRender) {
-    songList.innerHTML = ''; // Clear existing songs
+    songList.innerHTML = ""; // Clear existing songs
     songsToRender.forEach((song, index) => {
       const songItem = document.createElement("div");
       songItem.classList.add("song-item");
@@ -36,7 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
         <div id="player-${index}" class="player" style="display: none;">
           <div class="progress-container">
             <div class="progress-bar"></div>
-            <div class="progress-ball"></div> <!-- Invisible ball added -->
+            <div class="progress-ball"></div> 
           </div>
           <button class="like-button" onclick="likeSong(${index})">❤</button>
         </div>
@@ -45,13 +45,13 @@ document.addEventListener("DOMContentLoaded", () => {
       songList.appendChild(songItem);
     });
 
-    document.querySelectorAll('.progress-container').forEach((container, index) => {
-      container.addEventListener('mousedown', (e) => startDrag(index, e));
-      container.addEventListener('touchstart', (e) => startDrag(index, e), { passive: true });
-      container.addEventListener('mousemove', (e) => dragProgress(index, e));
-      container.addEventListener('touchmove', (e) => dragProgress(index, e));
-      container.addEventListener('mouseup', (e) => endDrag(index, e));
-      container.addEventListener('touchend', (e) => endDrag(index, e));
+    document.querySelectorAll(".progress-container").forEach((container, index) => {
+      container.addEventListener("mousedown", (e) => startDrag(index, e));
+      container.addEventListener("touchstart", (e) => startDrag(index, e), { passive: true });
+      container.addEventListener("mousemove", (e) => dragProgress(index, e));
+      container.addEventListener("touchmove", (e) => dragProgress(index, e));
+      container.addEventListener("mouseup", (e) => endDrag(index, e));
+      container.addEventListener("touchend", (e) => endDrag(index, e));
     });
   }
 
@@ -63,28 +63,34 @@ document.addEventListener("DOMContentLoaded", () => {
     const progressBar = player.querySelector(".progress-bar");
     const progressBall = player.querySelector(".progress-ball");
 
-    // Stop and reset current player if a new song is selected
     if (activePlayer !== null && activePlayer !== index) {
       const activePlayerElement = document.getElementById(`player-${activePlayer}`);
       const activePlayButton = document.querySelector(`#song-${activePlayer} .play-button`);
 
-      if (currentHowl) currentHowl.stop(); // Stop the currently playing song
-      activePlayerElement.style.display = "none"; // Hide the player's controls
-      activePlayButton.textContent = "▶"; // Reset the play button to "▶"
-      cancelAnimationFrame(progressRequestId); // Stop progress updates
+      if (currentHowl) currentHowl.stop();
+      activePlayerElement.style.display = "none";
+      activePlayButton.textContent = "▶";
+      cancelAnimationFrame(progressRequestId);
+
+      // Reset the progress bar and save state
+      songProgress[activePlayer] = 0;
+      const activeProgressBar = activePlayerElement.querySelector(".progress-bar");
+      const activeProgressBall = activePlayerElement.querySelector(".progress-ball");
+      activeProgressBar.style.width = "0%";
+      activeProgressBall.style.left = "0%";
     }
 
     if (player.style.display === "flex") {
       player.style.display = "none";
       playButton.textContent = "▶";
-      cancelAnimationFrame(progressRequestId); // Stop progress updates
-      if (currentHowl) currentHowl.pause(); // Pause the current song
-      songProgress[index] = currentHowl.seek(); // Save progress when paused
+      cancelAnimationFrame(progressRequestId);
+      if (currentHowl) currentHowl.pause();
+      songProgress[index] = currentHowl.seek();
       activePlayer = null;
-      progressBall.style.display = "none"; // Hide the ball when the player is closed
+      progressBall.style.display = "none";
     } else {
       player.style.display = "flex";
-      playButton.textContent = "II"; // Show the pause icon
+      playButton.textContent = "II";
 
       if (currentHowl) currentHowl.stop();
 
@@ -94,13 +100,10 @@ document.addEventListener("DOMContentLoaded", () => {
         onend: () => {
           playButton.textContent = "▶";
           cancelAnimationFrame(progressRequestId);
-        }
+        },
       });
 
-      if (songProgress[index]) {
-        currentHowl.seek(songProgress[index]); // Resume from saved progress
-      }
-
+      currentHowl.seek(songProgress[index] || 0);
       currentHowl.play();
       activePlayer = index;
 
@@ -108,12 +111,13 @@ document.addEventListener("DOMContentLoaded", () => {
         if (currentHowl && !isDragging) {
           const progress = (currentHowl.seek() / currentHowl.duration()) * 100;
           progressBar.style.width = `${progress}%`;
-          progressRequestId = requestAnimationFrame(updateProgress); // Use requestAnimationFrame for smoother progress updates
+          progressBall.style.left = `${progress}%`;
+          progressRequestId = requestAnimationFrame(updateProgress);
         }
       }
 
       updateProgress();
-      progressBall.style.display = "block"; // Show the ball when the player starts
+      progressBall.style.display = "block";
     }
   };
 
@@ -135,7 +139,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (currentHowl) {
       progressBar.style.width = `${percentage * 100}%`;
-      progressBall.style.left = `${percentage * 100}%`; // Move the ball
+      progressBall.style.left = `${percentage * 100}%`;
       currentHowl.seek(percentage * currentHowl.duration());
     }
   }
@@ -163,37 +167,20 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
-  document.body.addEventListener('touchmove', (e) => {
-    if (isDragging) {
-      e.preventDefault(); // Prevent scrolling
-    }
-  }, { passive: false });
-
-  document.addEventListener('visibilitychange', () => {
-    if (document.hidden && currentHowl) {
-      currentHowl.pause(); // Pause when page is hidden
-      const activePlayButton = document.querySelector(`#song-${activePlayer} .play-button`);
-      if (activePlayButton) activePlayButton.textContent = "▶"; // Revert to play button
-    }
-  });
-
   searchInput.addEventListener("input", () => {
     const searchTerm = searchInput.value.toLowerCase();
-    const filteredSongs = songs.filter(song => 
-      song.title.toLowerCase().includes(searchTerm) || 
-      song.artist.toLowerCase().includes(searchTerm)
+    const filteredSongs = songs.filter(
+      (song) =>
+        song.title.toLowerCase().includes(searchTerm) ||
+        song.artist.toLowerCase().includes(searchTerm)
     );
     renderSongs(filteredSongs);
 
-    if (searchTerm.trim() !== "") {
-      searchClearButton.style.display = "block";
-    } else {
-      searchClearButton.style.display = "none";
-    }
+    searchClearButton.style.display = searchTerm.trim() !== "" ? "block" : "none";
   });
 
   searchClearButton.addEventListener("click", () => {
-    searchInput.value = '';
+    searchInput.value = "";
     renderSongs(songs);
     searchClearButton.style.display = "none";
   });
@@ -202,11 +189,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const sortBy = sortSelect.value;
     let sortedSongs = [...songs];
 
-    if (sortBy === 'alphabetical') {
+    if (sortBy === "alphabetical") {
       sortedSongs.sort((a, b) => a.title.localeCompare(b.title));
-    } else if (sortBy === 'most-liked') {
+    } else if (sortBy === "most-liked") {
       sortedSongs.sort((a, b) => b.likes - a.likes);
-    } else if (sortBy === 'most-recent') {
+    } else if (sortBy === "most-recent") {
       sortedSongs.sort((a, b) => new Date(b.date) - new Date(a.date));
     }
 
