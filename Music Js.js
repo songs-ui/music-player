@@ -58,7 +58,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     document.querySelectorAll(".progress-container").forEach((container, index) => {
       container.addEventListener("mousedown", (e) => startDrag(index, e));
-      container.addEventListener("touchstart", (e) => startDrag(index, e), { passive: true });
+      container.addEventListener("touchstart", (e) => startDrag(index, e), { passive: false });
       container.addEventListener("mousemove", (e) => dragProgress(index, e));
       container.addEventListener("touchmove", (e) => dragProgress(index, e));
       container.addEventListener("mouseup", (e) => endDrag(index, e));
@@ -132,6 +132,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   window.startDrag = function (index, event) {
     isDragging = true;
+    event.preventDefault(); // Prevent page scroll during drag
     dragProgress(index, event); // Initialize the drag
   };
 
