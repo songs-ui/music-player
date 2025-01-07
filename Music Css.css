@@ -447,8 +447,8 @@ html, body {
   }
 
   .progress-container {
-    width: 90%;
-    margin-right: 0;
+    width: 80%;
+    margin-right: 30px;
   }
 }
 
