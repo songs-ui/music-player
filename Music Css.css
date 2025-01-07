@@ -335,7 +335,7 @@ body {
 }
 
 .progress-container {
-  width: 70%; /* Updated to make the progress bar 80% width */
+  width: 60%; /* Updated to make the progress bar shorter */
   height: 8px; /* Adjusted height */
   background: #333;
   position: relative;
@@ -357,12 +357,39 @@ body {
   position: relative;
   justify-content: center;
   color: #f06262;
-  width: 40px;
-  height: 40px;
-  top: 50%; /* Vertically center it */
-  right: -40px;
-  transform: translateY(-50%); /* Adjust vertical alignment */
+  font-size: 20px;
+  transition: transform 0.5s ease;
 }
+
+.like-button.active {
+  color: #29b954;
+  transform: scale(1.0);
+}
+
+.album-info {
+  display: flex;
+  align-items: center;
+}
+
+.album-info h3 {
+  font-size: 18px;
+  margin: 0;
+  color: #ffffff;
+}
+
+.album-info h4 {
+  font-size: 14px;
+  color: #aaa;
+  margin-top: -8px;
+}
+
+.album-info img {
+  width: 50px;
+  height: 50px;
+  border-radius: 10px;
+  margin-right: 10px;
+}
+
 
 html, body {
   margin: 0;
@@ -446,7 +473,7 @@ html, body {
   }
 
   .progress-container {
-    width: 70%;
+    width: 90%;
     margin-right: 0;
   }
 }
