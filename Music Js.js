@@ -7,8 +7,8 @@ const songs = [
   { title: "Stay", artist: "Justin Bieber", src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3", likes: 18, date: "2022-07-14" },
 ];
 
-let activePlayer = null;
-let currentHowl = null;
+let activePlayer = null;  // Track the currently active player
+let currentHowl = null;   // Track the Howl instance for the current song
 let likesPerSession = {}; // Track likes per session for each song
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -85,19 +85,31 @@ document.addEventListener("DOMContentLoaded", () => {
     const progressBar = player.querySelector(".progress-bar");
     const likeButton = player.querySelector(".like-button");
 
+    // If another song is playing, stop it first
+    if (activePlayer !== null && activePlayer !== index && currentHowl) {
+      currentHowl.pause(); // Pause the current song
+      const activeSongPlayer = document.getElementById(`player-${activePlayer}`);
+      const activePlayButton = activeSongPlayer.querySelector(".play-button");
+      activeSongPlayer.style.display = "none"; // Hide the current player's controls
+      activePlayButton.textContent = "▶"; // Reset the play button
+    }
+
+    // Now toggle the selected song
     if (player.style.display === "flex") {
       player.style.display = "none";
       playButton.textContent = "▶";
       progressBar.style.display = "none";
       likeButton.style.display = "none";
-      if (currentHowl) currentHowl.pause();
+      if (currentHowl) currentHowl.pause(); // Pause the current song
+      activePlayer = null; // No song is currently playing
     } else {
       player.style.display = "flex";
-      playButton.textContent = "II";
+      playButton.textContent = "II"; // Change button text to pause
       progressBar.style.display = "block";
       likeButton.style.display = "flex";
       currentHowl = new Howl({ src: [songs[index].src], html5: true });
       currentHowl.play();
+      activePlayer = index; // Set the active song to the current song
     }
   };
 
