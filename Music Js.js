@@ -121,33 +121,46 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
-  function startDrag(index, event) {
-    isDragging = true;
-    dragProgress(index, event);
+ function startDrag(index, event) {
+  isDragging = true;
+  dragProgress(index, event); // Initialize the drag
+}
+
+
+function dragProgress(index, event) {
+  if (!isDragging) return;
+
+  const player = document.getElementById(`player-${index}`);
+  const progressContainer = player.querySelector(".progress-container");
+  const progressBar = progressContainer.querySelector(".progress-bar");
+  const progressBall = progressContainer.querySelector(".progress-ball");
+  const rect = progressContainer.getBoundingClientRect();
+
+  const clientX = event.clientX || (event.touches && event.touches[0].clientX);
+
+  // Calculate the percentage (clamped between 0 and 1)
+  const percentage = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
+
+  // Update the progress bar and ball positions visually
+  progressBar.style.width = `${percentage * 100}%`;
+  progressBall.style.left = `${percentage * 100}%`;
+
+  // Update the song position (seek) only during dragging
+  if (currentHowl) {
+    const newTime = percentage * currentHowl.duration();
+    currentHowl.seek(newTime);
   }
+}
 
-  function dragProgress(index, event) {
-    if (!isDragging) return;
+function endDrag(index, event) {
+  if (!isDragging) return;
+  isDragging = false;
 
-    const player = document.getElementById(`player-${index}`);
-    const progressContainer = player.querySelector(".progress-container");
-    const progressBar = progressContainer.querySelector(".progress-bar");
-    const progressBall = progressContainer.querySelector(".progress-ball");
-    const rect = progressContainer.getBoundingClientRect();
-    const clientX = event.clientX || (event.touches && event.touches[0].clientX);
-    const percentage = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
+  // Perform a final update for the progress bar and audio position
+  dragProgress(index, event);
+}
 
-    if (currentHowl) {
-      progressBar.style.width = `${percentage * 100}%`;
-      progressBall.style.left = `${percentage * 100}%`;
-      currentHowl.seek(percentage * currentHowl.duration());
-    }
-  }
 
-  function endDrag(index, event) {
-    isDragging = false;
-    dragProgress(index, event);
-  }
 
   window.likeSong = function (index) {
     const likeCountSpan = document.getElementById(`like-count-${index}`);
