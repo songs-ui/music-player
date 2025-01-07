@@ -86,30 +86,41 @@ document.addEventListener("DOMContentLoaded", () => {
     const likeButton = player.querySelector(".like-button");
 
     // If another song is playing, stop it first
-    if (activePlayer !== null && activePlayer !== index && currentHowl) {
-      currentHowl.pause(); // Pause the current song
-      const activeSongPlayer = document.getElementById(`player-${activePlayer}`);
-      const activePlayButton = activeSongPlayer.querySelector(".play-button");
-      activeSongPlayer.style.display = "none"; // Hide the current player's controls
+    if (activePlayer !== null && activePlayer !== index) {
+      const activePlayerElement = document.getElementById(`player-${activePlayer}`);
+      const activePlayButton = document.querySelector(`#song-${activePlayer} .play-button`);
+
+      if (currentHowl) currentHowl.stop(); // Stop the currently playing song
+      activePlayerElement.style.display = "none"; // Hide the player's controls
       activePlayButton.textContent = "▶"; // Reset the play button
     }
 
-    // Now toggle the selected song
+    // Toggle the selected song
     if (player.style.display === "flex") {
+      // Pause the current song
       player.style.display = "none";
-      playButton.textContent = "▶";
+      playButton.textContent = "▶"; // Set button to play
       progressBar.style.display = "none";
       likeButton.style.display = "none";
-      if (currentHowl) currentHowl.pause(); // Pause the current song
-      activePlayer = null; // No song is currently playing
+
+      if (currentHowl) currentHowl.pause(); // Pause the audio
+      activePlayer = null; // No song is active
     } else {
+      // Play the current song
       player.style.display = "flex";
-      playButton.textContent = "II"; // Change button text to pause
+      playButton.textContent = "II"; // Set button to pause
       progressBar.style.display = "block";
       likeButton.style.display = "flex";
+
+      // Stop the previous Howl instance if it exists
+      if (currentHowl) currentHowl.stop();
+
+      // Create a new Howl instance for the current song
       currentHowl = new Howl({ src: [songs[index].src], html5: true });
       currentHowl.play();
-      activePlayer = index; // Set the active song to the current song
+
+      // Update the active player index
+      activePlayer = index;
     }
   };
 
