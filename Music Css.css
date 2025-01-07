@@ -237,25 +237,25 @@ body {
 .play-button:hover {
 }
 
- .song-list-container {
-  width: 100%;
-  max-width: 1200px; /* Max width for large screens */
-  margin-left: auto; /* Center horizontally */
-  margin-right: auto; /* Center horizontally */
-  padding: 0 5%; /* Add padding on both sides */
-  box-sizing: border-box; /* Prevent overflow */
-  overflow-x: hidden; /* Prevent horizontal scroll */
+.song-list-container {
+  width: 100%; /* Take full width by default */
+  max-width: 1200px; /* Constrain the maximum width */
+  margin-left: auto; /* Anchor from the left */
+  margin-right: auto; /* Anchor from the right */
+  padding: 0 2%; /* Reduce the gap on both sides (was 5%, now 2%) */
+  box-sizing: border-box; /* Ensure padding doesn't affect width */
+  overflow-x: hidden; /* Prevent horizontal scrolling */
 }
 
-/* The song list should take up the full width within the container */
 .song-list {
-  width: 100%;
+  width: 100%; /* Take the full width of the container */
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px; /* Space between songs */
+  gap: 10px; /* Add spacing between songs */
   overflow-x: hidden; /* Prevent horizontal scrolling */
 }
+
 .song-list {
   position: relative;
   width: 90%;
@@ -342,25 +342,41 @@ body {
   color: #f06262;
 }
 
+/* General styling for body and html to avoid overflow */
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%; /* Set full width */
+  overflow-x: hidden; /* Prevent horizontal scrolling */
+}
+
+/* Adjusting the song list container for mobile */
 @media (max-width: 768px) {
-  .controls {
-    flex-direction: column; /* Stack elements vertically */
-    align-items: center; /* Make them full-width */
-    width: 90%;
-    max-width: 100%; /* Ensure full-width */
-    margin: 10px auto 10px 20px; /* Adjusted top margin to bring it closer to the song items and move it a bit to the right */
-
- }
-
-    .song-list-container {
-    padding: 0 10px; /* Padding for mobile */
+  .song-list-container {
     width: 100%; /* Full width for mobile */
+    max-width: 100%; /* Ensure it doesn't exceed screen width */
+    margin-left: auto; /* Center align */
+    margin-right: auto; /* Center align */
+    padding: 0 4%; /* Add equal padding on both sides */
+    box-sizing: border-box; /* Ensure padding doesn't affect width */
+    overflow-x: hidden; /* Explicitly prevent horizontal scrolling */
   }
 
-  /* Prevent horizontal scroll on body */
-  body, html {
-    overflow-x: hidden;
+  .song-list {
+    width: 100%; /* Full width of the container */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px; /* Maintain spacing between items */
   }
+
+  .song-item {
+    width: 92%; /* Slightly stretch song items to reduce gaps */
+    margin: 0 auto; /* Center song items */
+    padding: 10px; /* Reduced padding for smaller screens */
+  }
+}
+
   
   /* Adjust song-item for mobile */
   .song-item {
