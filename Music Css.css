@@ -206,11 +206,11 @@ body {
   color: white;
   font-size: 20px;
   border: none;
-  padding: 5px 10px;
+  padding: 5px 7px;
   border-radius: 50%;
   cursor: pointer;
   position: absolute;
-  right: 10px; /* Positioned inside the input field */
+  right: 15px; /* Positioned inside the input field */
   top: 50%;
   transform: translateY(-50%); /* Vertically center the button */
   display: none; /* Initially hidden */
