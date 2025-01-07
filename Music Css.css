@@ -204,9 +204,9 @@ body {
 .search-clear {
   background-color: #29b954; /* Spotify green color */
   color: white;
-  font-size: 20px;
+  font-size: 16px;
   border: none;
-  padding: 4px 4px;
+  padding: 5px 5px;
   border-radius: 50%;
   cursor: pointer;
   position: absolute;
