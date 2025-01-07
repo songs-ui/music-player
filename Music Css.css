@@ -7,7 +7,7 @@ body {
   flex-direction: column;
   align-items: center;
   position: relative;
-  overflow: hidden;
+  overflow: auto; /* Enable scrolling */
   height: 100vh;
 }
 
@@ -99,7 +99,7 @@ body {
   align-items: center; /* Align vertically in the same line */
   width: 90%; /* Maintain alignment with other elements */
   max-width: 800px; /* Restrict maximum width */
-  margin: 20px auto; /* Center horizontally */
+  margin: 10px auto 10px 20px; /* Center horizontally */
 }
 
 
@@ -112,7 +112,7 @@ body {
   border: none;
   box-shadow: inset 4px 4px 8px #14161a, inset -4px -4px 8px #262a30;
   cursor: pointer;
-  margin: 0; /* Removed unnecessary margins */
+  margin-left: 5px; /* Removed unnecessary margins */
 }
 
 .header {
@@ -171,14 +171,14 @@ body {
 
 .search-bar {
   margin-top: 60px; /* Removed unnecessary margins */
-  width: 93%; /* Allow dynamic width */
+  width: 90%; /* Allow dynamic width */
   position: relative; /* Ensure the search-clear button can be positioned inside */
 }
 
 .search-bar input {
   width: 90%; /* Ensure input takes up the full width of the container */
   padding: 15px;
-  padding-right: 40px; /* Add extra space on the right for the clear button */
+  padding-right: 0px; /* Add extra space on the right for the clear button */
   border-radius: 16px;
   border: none;
   outline: none;
@@ -241,6 +241,8 @@ body {
   position: relative;
   width: 90%;
   max-width: 800px;
+  overflow-y: auto; /* Allow scrolling for song list */
+  max-height: 70vh; /* Limit height for scrollable area */
 }
 
 .song-item {
@@ -324,13 +326,49 @@ body {
 @media (max-width: 600px) {
   .controls {
     flex-direction: column; /* Stack elements vertically */
-    align-items: stretch; /* Make them full-width */
-  }
+    align-items: center; /* Make them full-width */
+    width: 90%;
+    max-width: 100%; /* Ensure full-width */
+    margin: 10px auto 10px 20px; /* Adjusted top margin to bring it closer to the song items and move it a bit to the right */
+
+ }
+
 
   .search-bar,
   .sort-dropdown {
     width: 92%; /* Full width on mobile */
-    margin-bottom: 0px; /* Add spacing between stacked elements */
-    margin-top: 10px;
+    /* Add spacing between stacked elements */
+    margin-top: 30px;
+    margin-bottom: 0px;
+  }
+
+  .logo-container {
+    width: 90%; /* Decrease the width for smaller screens */
+    padding: 10px;
+  }
+
+  .song-item {
+    width: 90%; /* Full width on smaller screens */
+    padding: 10px; /* Reduce padding for smaller screens */
+    margin-top: 0px;
+  }
+
+  .song-header h3 {
+    font-size: 16px; /* Adjust font size for song titles */
+  }
+
+  .song-artist {
+    font-size: 12px; /* Adjust artist name font size */
+  }
+
+  .play-button,
+  .like-button {
+    width: 35px; /* Smaller buttons for mobile */
+    height: 35px;
+    font-size: 14px; /* Smaller button text */
+  }
+
+  .search-bar input {
+    font-size: 14px; /* Adjust input text size */
   }
 }
