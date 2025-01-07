@@ -155,12 +155,13 @@ body {
 
 .invisible-ball {
   position: absolute;
-  width: 0;
-  height: 0;
-  background-color: transparent;
+  top: -3px;
+  width: 10px;
+  height: 10px;
+  background-color: #007bff;
   border-radius: 50%;
-  box-shadow: 0 0 10px rgba(29, 185, 84, 0.6); /* Light green glow */
-  animation: invisibleBallAnimation 10s infinite ease-in-out;
+  transform: translate(-50%, 0);
+  transition: left 0.1s ease;
 }
 
 @keyframes invisibleBallAnimation {
@@ -393,7 +394,7 @@ body {
   cursor: pointer;
   margin-right: 5px; /* Added gap between progress bar and like button */
   will-change: transform;
-  transition: none;
+  transition: width 0.1s ease;
 }
 
 .progress-bar {
