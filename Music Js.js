@@ -61,13 +61,14 @@ document.addEventListener("DOMContentLoaded", () => {
     const playButton = document.querySelector(`#song-${index} .play-button`);
     const progressBar = player.querySelector(".progress-bar");
 
+    // Stop and reset current player if a new song is selected
     if (activePlayer !== null && activePlayer !== index) {
       const activePlayerElement = document.getElementById(`player-${activePlayer}`);
       const activePlayButton = document.querySelector(`#song-${activePlayer} .play-button`);
 
       if (currentHowl) currentHowl.stop(); // Stop the currently playing song
       activePlayerElement.style.display = "none"; // Hide the player's controls
-      activePlayButton.textContent = "▶"; // Reset the play button
+      activePlayButton.textContent = "▶"; // Reset the play button to "▶"
       cancelAnimationFrame(progressRequestId); // Stop progress updates
     }
 
@@ -80,7 +81,7 @@ document.addEventListener("DOMContentLoaded", () => {
       activePlayer = null;
     } else {
       player.style.display = "flex";
-      playButton.textContent = "II";
+      playButton.textContent = "II"; // Show the pause icon
 
       if (currentHowl) currentHowl.stop();
 
@@ -165,6 +166,8 @@ document.addEventListener("DOMContentLoaded", () => {
   document.addEventListener('visibilitychange', () => {
     if (document.hidden && currentHowl) {
       currentHowl.pause(); // Pause when page is hidden
+      const activePlayButton = document.querySelector(`#song-${activePlayer} .play-button`);
+      if (activePlayButton) activePlayButton.textContent = "▶"; // Revert to play button
     }
   });
 
