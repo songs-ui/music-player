@@ -391,7 +391,7 @@ body {
   background: #333;
   position: relative;
   cursor: pointer;
-  margin-right: 10px; /* Added gap between progress bar and like button */
+  margin-right: 5px; /* Added gap between progress bar and like button */
 }
 
 .progress-bar {
@@ -409,7 +409,7 @@ body {
   width: 40px;
   height: 40px;
   top: 50%; /* Vertically center it */
-  right: -5px;
+  block-size: 5px;
   transform: translateY(-50%); /* Adjust vertical alignment */
 }
 
