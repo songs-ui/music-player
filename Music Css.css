@@ -206,7 +206,7 @@ body {
   color: white;
   font-size: 16px;
   border: none;
-  padding: 5px;
+  padding: 5px 5px;
   border-radius: 50%; /* Make it a circle */
   cursor: pointer;
   position: absolute;
