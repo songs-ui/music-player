@@ -12,6 +12,7 @@ let currentHowl = null;   // Track the Howl instance for the current song
 let likesPerSession = {}; // Track likes per session for each song
 let progressInterval = null; // For updating the progress bar
 let isDragging = false; // Track whether the user is dragging the progress bar
+let songProgress = {}; // Track progress for each song
 
 document.addEventListener("DOMContentLoaded", () => {
   const songList = document.querySelector(".song-list");
@@ -75,6 +76,7 @@ document.addEventListener("DOMContentLoaded", () => {
       playButton.textContent = "▶";
       clearInterval(progressInterval); // Stop progress updates
       if (currentHowl) currentHowl.pause(); // Pause the current song
+      songProgress[index] = currentHowl.seek(); // Save progress when paused
       activePlayer = null;
     } else {
       player.style.display = "flex";
@@ -90,6 +92,10 @@ document.addEventListener("DOMContentLoaded", () => {
           clearInterval(progressInterval);
         }
       });
+
+      if (songProgress[index]) {
+        currentHowl.seek(songProgress[index]); // Resume from the saved progress
+      }
 
       currentHowl.play();
       activePlayer = index;
@@ -146,4 +152,18 @@ document.addEventListener("DOMContentLoaded", () => {
       alert("You've already liked this song 5 times in this session!");
     }
   };
+
+  // Prevent scrolling when dragging the progress bar
+  document.body.addEventListener('touchmove', (e) => {
+    if (isDragging) {
+      e.preventDefault(); // Prevent scrolling
+    }
+  }, { passive: false });
+
+  // Stop playing music when the page is not visible (background)
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden && currentHowl) {
+      currentHowl.pause(); // Pause if the page is hidden
+    }
+  });
 });
