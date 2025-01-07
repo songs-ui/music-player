@@ -36,6 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
         <div id="player-${index}" class="player" style="display: none;">
           <div class="progress-container">
             <div class="progress-bar"></div>
+            <div class="progress-ball"></div> <!-- Invisible ball added -->
           </div>
           <button class="like-button" onclick="likeSong(${index})">❤</button>
         </div>
@@ -60,6 +61,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const player = document.getElementById(`player-${index}`);
     const playButton = document.querySelector(`#song-${index} .play-button`);
     const progressBar = player.querySelector(".progress-bar");
+    const progressBall = player.querySelector(".progress-ball");
 
     // Stop and reset current player if a new song is selected
     if (activePlayer !== null && activePlayer !== index) {
@@ -79,6 +81,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (currentHowl) currentHowl.pause(); // Pause the current song
       songProgress[index] = currentHowl.seek(); // Save progress when paused
       activePlayer = null;
+      progressBall.style.display = "none"; // Hide the ball when the player is closed
     } else {
       player.style.display = "flex";
       playButton.textContent = "II"; // Show the pause icon
@@ -110,6 +113,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       updateProgress();
+      progressBall.style.display = "block"; // Show the ball when the player starts
     }
   };
 
@@ -124,12 +128,14 @@ document.addEventListener("DOMContentLoaded", () => {
     const player = document.getElementById(`player-${index}`);
     const progressContainer = player.querySelector(".progress-container");
     const progressBar = progressContainer.querySelector(".progress-bar");
+    const progressBall = progressContainer.querySelector(".progress-ball");
     const rect = progressContainer.getBoundingClientRect();
     const clientX = event.clientX || (event.touches && event.touches[0].clientX);
     const percentage = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
 
     if (currentHowl) {
       progressBar.style.width = `${percentage * 100}%`;
+      progressBall.style.left = `${percentage * 100}%`; // Move the ball
       currentHowl.seek(percentage * currentHowl.duration());
     }
   }
