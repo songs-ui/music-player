@@ -341,8 +341,8 @@ body {
   color: #f06262;
   width: 40px;
   height: 40px;
-  right: 5px; /* Right align the like button inside the progress bar */
   top: 50%; /* Vertically center it */
+  right: -13px;
   transform: translateY(-50%); /* Adjust vertical alignment */
 }
 
