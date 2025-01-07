@@ -392,13 +392,15 @@ body {
   position: relative;
   cursor: pointer;
   margin-right: 5px; /* Added gap between progress bar and like button */
+  will-change: transform;
+  transition: none;
 }
 
 .progress-bar {
   width: 0%;
   height: 100%;
   background: #f06262;
-  transition: width 0.0s linear;
+  transition: none;
   margin-top: 0px;
 }
 
