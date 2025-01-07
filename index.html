@@ -5,11 +5,19 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Music Player</title>
-  <link rel="stylesheet" href="Music Css.css">
+  <link rel="stylesheet" href="styles.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js"></script>
 </head>
 <body>
   <!-- Particles in the background -->
+  <div class="particle"></div>
+  <div class="particle"></div>
+  <div class="particle"></div>
+  <div class="particle"></div>
+  <div class="particle"></div>
+  <div class="particle"></div>
+  <div class="particle"></div>
+  <div class="particle"></div>
   <div class="particle"></div>
   <div class="particle"></div>
   <div class="particle"></div>
@@ -24,9 +32,9 @@
       <div class="logo">Music App</div>
     </div>
     <div class="search-bar">
-  <input type="text" placeholder="Search for a song..." id="search-input">
-  <button class="search-clear" id="clear-btn" style="display: none;">&#10006;</button>
-</div>
+      <input type="text" placeholder="Search for a song..." id="search-input">
+      <button class="search-clear" id="clear-btn" style="display: none;">&#10006;</button>
+    </div>
 
     <div class="sort-dropdown">
       <label for="sort"> </label>
@@ -39,15 +47,14 @@
   </div>
 
   <div class="song-list-container">
-  <div class="song-list">
-    <div class="progress-container">
-  <div class="progress-bar"></div>
-</div>
-
-
-    <!-- Songs will be generated dynamically -->
+    <div class="song-list">
+      <div class="progress-container">
+        <div class="progress-bar"></div>
+      </div>
+      <!-- Songs will be generated dynamically -->
+    </div>
   </div>
 
-  <script src="Music Js.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
