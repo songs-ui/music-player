@@ -1,6 +1,6 @@
 body {
   font-family: 'Arial', sans-serif;
-  background-color: black;
+  background-color: #121212; /* Slightly lighter dark color */
   margin: 0px;
   padding: 0px;
   display: flex;
@@ -13,24 +13,24 @@ body {
 
 @keyframes particleMovement {
   0% {
-    opacity: 0.5;
+    opacity: 0.3; /* Lower opacity for better performance */
     transform: translate(0, 0) scale(1);
   }
   50% {
-    opacity: 1;
+    opacity: 0.8;
     transform: translate(150px, 150px) scale(1.5);
   }
   100% {
-    opacity: 0.5;
+    opacity: 0.3;
     transform: translate(-150px, -150px) scale(1);
   }
 }
 
 .particle {
   position: absolute;
-  width: 20px; /* Bigger particles */
-  height: 20px; /* Bigger particles */
-  background-color: rgba(29, 185, 84, 0.8); /* Golden color */
+  width: 15px; /* Smaller particles */
+  height: 15px; /* Smaller particles */
+  background-color: rgba(29, 185, 84, 0.6); /* Slightly more transparent for efficiency */
   border-radius: 50%;
   animation: particleMovement 5s ease-in-out infinite;
   pointer-events: none; /* Prevent particles from interfering with user interactions */
@@ -87,8 +87,6 @@ body {
   left: 50%;
 }
 
-/* Add more particles as needed */
-
 .sort-dropdown {
   margin-top: 10px; /* Removed unnecessary margin */
 }
@@ -101,8 +99,6 @@ body {
   max-width: 800px; /* Restrict maximum width */
   margin: 10px auto 10px 20px; /* Center horizontally */
 }
-
-
 
 #sort {
   padding: 10px;
@@ -122,7 +118,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin:  0px;
+  margin: 0px;
   position: relative;
 }
 
@@ -131,15 +127,15 @@ body {
     box-shadow: 
       inset 4px 4px 8px #262a30, 
       inset -4px -4px 8px #262a30,
-     0 1px 1px rgba(29, 185, 84, 0.8),   /* Spotify Green outer glow (bright) */
-      0 15px 3px rgba(29, 185, 84, 0.4);  /* Spotify Green outer glow (dim) */
+     0 1px 1px rgba(29, 185, 84, 0.6),   /* Slightly lighter Spotify Green outer glow */
+      0 15px 3px rgba(29, 185, 84, 0.3);  /* Less intense Spotify Green outer glow */
   }
   50% {
     box-shadow: 
       inset 4px 4px 8px #262a30, 
       inset -4px -4px 8px #262a30,
-      0 2px 2px rgba(29, 185, 84, 0.8),  /* Spotify Green outer glow */
-      0 5px 5px rgba(29, 185, 84, 0.4); 
+      0 2px 2px rgba(29, 185, 84, 0.6),  /* Slightly lighter Spotify Green outer glow */
+      0 5px 5px rgba(29, 185, 84, 0.3); 
   }
 }
 
@@ -155,8 +151,8 @@ body {
   box-shadow: 
     inset 4px 4px 8px #262a30, 
     inset -4px -4px 8px #262a30,
-    0 1px 1px rgba(29, 185, 84, 0.8),  /* Spotify Green outer glow */
-      0 10px 3px rgba(29, 185, 84, 0.4); 
+    0 1px 1px rgba(29, 185, 84, 0.6),  /* Slightly lighter Spotify Green outer glow */
+      0 10px 3px rgba(29, 185, 84, 0.3); 
   animation: glow 1s infinite alternate;
 }
 
@@ -171,8 +167,9 @@ body {
 }
 
 .search-bar {
+  margin-right: -20px;
   margin-top: 60px; /* Removed unnecessary margins */
-  width: 90%; /* Allow dynamic width */
+  width: 98%; /* Allow dynamic width */
   position: relative; /* Ensure the search-clear button can be positioned inside */
 }
 
@@ -221,23 +218,6 @@ body {
   border-color: #29b954; /* Green border when focused */
 }
 
-
-/* Style for play/pause button (example, adjust as necessary) */
-.play-button {
-  background-color: #f06262;
-  color: white;
-  font-size: 18px;
-  border: none;
-  padding: 10px 15px;
-  border-radius: 50%;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-
-/* Hover effect for play/pause button */
-.play-button:hover {
-}
-
 .song-list-container {
   width: 100%; /* Take full width by default */
   max-width: 1200px; /* Constrain the maximum width */
@@ -262,7 +242,6 @@ body {
   width: 90%;
   max-width: 800px;
   overflow-y: auto; /* Allow scrolling for song list */
-  
 }
 
 .song-item {
@@ -347,7 +326,6 @@ body {
   transform: translateY(-50%); /* Adjust vertical alignment */
 }
 
-/* General styling for body and html to avoid overflow */
 html, body {
   margin: 0;
   padding: 0;
@@ -382,14 +360,12 @@ html, body {
   }
 }
 
-  
-  /* Adjust song-item for mobile */
   .song-item {
     width: 100%; /* Full width for song items */
     margin-left: 0; /* No margin to the left */
     margin-right: 0; /* No margin to the right */
   }
-  /* Ensure no horizontal scroll on small screens */
+
   body, html {
     overflow-x: hidden; /* Disable horizontal scroll */
   }
@@ -397,7 +373,6 @@ html, body {
   .search-bar,
   .sort-dropdown {
     width: 90%; /* Full width on mobile */
-    /* Add spacing between stacked elements */
     margin-top: 30px;
     margin-bottom: 0px;
   }
@@ -406,7 +381,6 @@ html, body {
     width: 88%; /* Decrease the width for smaller screens */
     padding: 10px;
   }
- 
 
   .song-item {
     width: 90%; /* Full width on smaller screens */
