@@ -10,6 +10,7 @@ body {
   overflow: auto; /* Enable scrolling */
   overflow-y: auto;
 }
+
 @keyframes particleMovement {
   0% {
     opacity: 0.3; /* Lower opacity for better performance */
@@ -152,6 +153,26 @@ body {
   content: '🎵'; /* Music emoji */
 }
 
+.invisible-ball {
+  position: absolute;
+  width: 0;
+  height: 0;
+  background-color: transparent;
+  border-radius: 50%;
+  box-shadow: 0 0 10px rgba(29, 185, 84, 0.6); /* Light green glow */
+  animation: invisibleBallAnimation 10s infinite ease-in-out;
+}
+
+@keyframes invisibleBallAnimation {
+  0%, 100% {
+    transform: scale(0.1) translate(0, 0);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.5) translate(200px, 200px);
+    opacity: 0.5;
+  }
+}
 
 .sort-dropdown {
   margin-top: 10px; /* Removed unnecessary margin */
@@ -388,7 +409,7 @@ body {
   width: 40px;
   height: 40px;
   top: 50%; /* Vertically center it */
-  right: -13px;
+  right: -5px;
   transform: translateY(-50%); /* Adjust vertical alignment */
 }
 
@@ -478,6 +499,7 @@ html, body {
     margin-right: 0;
   }
 }
+
 @media screen and (max-width: 600px) {
   .search-bar input {
     width: 100%; /* Ensure search bar takes full width */
