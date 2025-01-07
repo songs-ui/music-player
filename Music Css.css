@@ -206,16 +206,25 @@ body {
   color: white;
   font-size: 16px;
   border: none;
-  padding: 5px 5px;
-  border-radius: 50%;
+  padding: 5px;
+  border-radius: 50%; /* Make it a circle */
   cursor: pointer;
   position: absolute;
-  right: 15px; /* Positioned inside the input field */
+  right: 10px; /* Adjust this to your liking */
   top: 50%;
   transform: translateY(-50%); /* Vertically center the button */
   display: none; /* Initially hidden */
   transition: background-color 0.2s ease;
+  width: 30px; /* Define the width and height to make it circular */
+  height: 30px;
+  text-align: center;
+  line-height: 18px; /* Align the icon or text */
 }
+
+.search-clear:hover {
+  background-color: #24a548; /* Slightly darker green on hover */
+}
+
 
 /* Show the clear button when there is text in the search bar */
 .search-bar input:not(:placeholder-shown) + .search-clear {
