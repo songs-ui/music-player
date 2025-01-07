@@ -10,13 +10,13 @@ const songs = [
 let activePlayer = null;  // Track the currently active player
 let currentHowl = null;   // Track the Howl instance for the current song
 let likesPerSession = {}; // Track likes per session for each song
+let progressInterval = null; // For updating the progress bar
 
 document.addEventListener("DOMContentLoaded", () => {
   const songList = document.querySelector(".song-list");
   const searchInput = document.querySelector(".search-bar input");
   const searchClearButton = document.querySelector(".search-clear");
 
-  // Function to render the songs
   function renderSongs(songs) {
     songList.innerHTML = ''; // Clear the existing songs
     songs.forEach((song, index) => {
@@ -31,7 +31,9 @@ document.addEventListener("DOMContentLoaded", () => {
         </div>
         <p class="song-artist">${song.artist}</p>
         <div id="player-${index}" class="player" style="display: none;">
-          <div class="progress-bar"></div>
+          <div class="progress-container" onclick="seekTo(${index}, event)">
+            <div class="progress-bar"></div>
+          </div>
           <button class="like-button" onclick="likeSong(${index})">❤</button>
         </div>
       `;
@@ -42,8 +44,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   renderSongs(songs); // Initial render
 
-  // Function to sort the songs based on the selected option
-  window.sortSongs = function() {
+  window.sortSongs = function () {
     const sortOption = document.getElementById('sort').value;
 
     if (sortOption === "alphabetical") {
@@ -57,19 +58,16 @@ document.addEventListener("DOMContentLoaded", () => {
     renderSongs(songs); // Re-render the sorted songs
   };
 
-  // Function to like a song
-  window.likeSong = function(index) {
+  window.likeSong = function (index) {
     const likeCountSpan = document.getElementById(`like-count-${index}`);
     let likeCount = parseInt(likeCountSpan.textContent, 10);
 
-    // Initialize the like count for the song if it doesn't exist yet
     if (!likesPerSession[index]) {
       likesPerSession[index] = 0;
     }
 
-    // Ensure the user can only like the song up to 5 times
     if (likesPerSession[index] < 5) {
-      likesPerSession[index] += 1; // Increment likes for the current session
+      likesPerSession[index] += 1;
       likeCount += 1;
       likeCountSpan.textContent = likeCount;
       songs[index].likes = likeCount; // Update the like count in the song array
@@ -78,14 +76,11 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
-  // Function to toggle the audio player
-  window.togglePlayer = function(index) {
+  window.togglePlayer = function (index) {
     const player = document.getElementById(`player-${index}`);
     const playButton = document.querySelector(`#song-${index} .play-button`);
     const progressBar = player.querySelector(".progress-bar");
-    const likeButton = player.querySelector(".like-button");
 
-    // If another song is playing, stop it first
     if (activePlayer !== null && activePlayer !== index) {
       const activePlayerElement = document.getElementById(`player-${activePlayer}`);
       const activePlayButton = document.querySelector(`#song-${activePlayer} .play-button`);
@@ -93,49 +88,66 @@ document.addEventListener("DOMContentLoaded", () => {
       if (currentHowl) currentHowl.stop(); // Stop the currently playing song
       activePlayerElement.style.display = "none"; // Hide the player's controls
       activePlayButton.textContent = "▶"; // Reset the play button
+      clearInterval(progressInterval); // Stop the progress interval for the previous song
     }
 
-    // Toggle the selected song
     if (player.style.display === "flex") {
-      // Pause the current song
       player.style.display = "none";
-      playButton.textContent = "▶"; // Set button to play
-      progressBar.style.display = "none";
-      likeButton.style.display = "none";
-
-      if (currentHowl) currentHowl.pause(); // Pause the audio
-      activePlayer = null; // No song is active
+      playButton.textContent = "▶";
+      clearInterval(progressInterval); // Stop progress updates
+      if (currentHowl) currentHowl.pause(); // Pause the current song
+      activePlayer = null;
     } else {
-      // Play the current song
       player.style.display = "flex";
-      playButton.textContent = "II"; // Set button to pause
-      progressBar.style.display = "block";
-      likeButton.style.display = "flex";
+      playButton.textContent = "II";
 
-      // Stop the previous Howl instance if it exists
       if (currentHowl) currentHowl.stop();
 
-      // Create a new Howl instance for the current song
-      currentHowl = new Howl({ src: [songs[index].src], html5: true });
-      currentHowl.play();
+      currentHowl = new Howl({
+        src: [songs[index].src],
+        html5: true,
+        onend: () => {
+          playButton.textContent = "▶";
+          clearInterval(progressInterval);
+        }
+      });
 
-      // Update the active player index
+      currentHowl.play();
       activePlayer = index;
+
+      progressInterval = setInterval(() => {
+        if (currentHowl) {
+          const progress = (currentHowl.seek() / currentHowl.duration()) * 100;
+          progressBar.style.width = `${progress}%`;
+        }
+      }, 100);
     }
   };
 
-  // Search functionality
+  window.seekTo = function (index, event) {
+    const player = document.getElementById(`player-${index}`);
+    const progressContainer = player.querySelector(".progress-container");
+    const rect = progressContainer.getBoundingClientRect();
+    const clickX = event.clientX - rect.left;
+    const percentage = clickX / rect.width;
+
+    if (currentHowl) {
+      currentHowl.seek(percentage * currentHowl.duration());
+      const progressBar = player.querySelector(".progress-bar");
+      progressBar.style.width = `${percentage * 100}%`;
+    }
+  };
+
   searchInput.addEventListener("input", () => {
     const query = searchInput.value.toLowerCase();
-    const filteredSongs = songs.filter(song => 
-      song.title.toLowerCase().includes(query) || 
+    const filteredSongs = songs.filter(song =>
+      song.title.toLowerCase().includes(query) ||
       song.artist.toLowerCase().includes(query)
     );
     renderSongs(filteredSongs); // Re-render the filtered songs
     searchClearButton.style.display = query.length > 0 ? 'block' : 'none'; // Show 'X' if there's input
   });
 
-  // Clear search input when 'X' is clicked
   searchClearButton.addEventListener("click", () => {
     searchInput.value = '';
     searchClearButton.style.display = 'none';
