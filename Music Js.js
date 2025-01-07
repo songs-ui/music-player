@@ -7,21 +7,21 @@ const songs = [
   { title: "Stay", artist: "Justin Bieber", src: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3", likes: 18, date: "2022-07-14" },
 ];
 
-let activePlayer = null;  // Track the currently active player
-let currentHowl = null;   // Track the Howl instance for the current song
-let likesPerSession = {}; // Track likes per session for each song
-let progressInterval = null; // For updating the progress bar
-let isDragging = false; // Track whether the user is dragging the progress bar
-let songProgress = {}; // Track progress for each song
+let activePlayer = null;
+let currentHowl = null;
+let likesPerSession = {};
+let isDragging = false;
+let songProgress = {};
+let progressRequestId = null;
 
 document.addEventListener("DOMContentLoaded", () => {
   const songList = document.querySelector(".song-list");
   const searchInput = document.querySelector(".search-bar input");
   const searchClearButton = document.querySelector(".search-clear");
-  const sortSelect = document.querySelector("#sort"); // Corrected selector here
+  const sortSelect = document.querySelector("#sort");
 
   function renderSongs(songsToRender) {
-    songList.innerHTML = ''; // Clear the existing songs
+    songList.innerHTML = ''; // Clear existing songs
     songsToRender.forEach((song, index) => {
       const songItem = document.createElement("div");
       songItem.classList.add("song-item");
@@ -44,7 +44,6 @@ document.addEventListener("DOMContentLoaded", () => {
       songList.appendChild(songItem);
     });
 
-    // Add drag-and-tap event listeners to progress bars
     document.querySelectorAll('.progress-container').forEach((container, index) => {
       container.addEventListener('mousedown', (e) => startDrag(index, e));
       container.addEventListener('touchstart', (e) => startDrag(index, e), { passive: true });
@@ -69,13 +68,13 @@ document.addEventListener("DOMContentLoaded", () => {
       if (currentHowl) currentHowl.stop(); // Stop the currently playing song
       activePlayerElement.style.display = "none"; // Hide the player's controls
       activePlayButton.textContent = "▶"; // Reset the play button
-      clearInterval(progressInterval); // Stop the progress interval for the previous song
+      cancelAnimationFrame(progressRequestId); // Stop progress updates
     }
 
     if (player.style.display === "flex") {
       player.style.display = "none";
       playButton.textContent = "▶";
-      clearInterval(progressInterval); // Stop progress updates
+      cancelAnimationFrame(progressRequestId); // Stop progress updates
       if (currentHowl) currentHowl.pause(); // Pause the current song
       songProgress[index] = currentHowl.seek(); // Save progress when paused
       activePlayer = null;
@@ -90,24 +89,26 @@ document.addEventListener("DOMContentLoaded", () => {
         html5: true,
         onend: () => {
           playButton.textContent = "▶";
-          clearInterval(progressInterval);
+          cancelAnimationFrame(progressRequestId);
         }
       });
 
-      // Retrieve saved progress if available
       if (songProgress[index]) {
-        currentHowl.seek(songProgress[index]); // Resume from the saved progress
+        currentHowl.seek(songProgress[index]); // Resume from saved progress
       }
 
       currentHowl.play();
       activePlayer = index;
 
-      progressInterval = setInterval(() => {
+      function updateProgress() {
         if (currentHowl && !isDragging) {
           const progress = (currentHowl.seek() / currentHowl.duration()) * 100;
           progressBar.style.width = `${progress}%`;
+          progressRequestId = requestAnimationFrame(updateProgress); // Use requestAnimationFrame for smoother progress updates
         }
-      }, 100);
+      }
+
+      updateProgress();
     }
   };
 
@@ -149,36 +150,32 @@ document.addEventListener("DOMContentLoaded", () => {
       likesPerSession[index] += 1;
       likeCount += 1;
       likeCountSpan.textContent = likeCount;
-      songs[index].likes = likeCount; // Update the like count in the song array
+      songs[index].likes = likeCount;
     } else {
       alert("You've already liked this song 5 times in this session!");
     }
   };
 
-  // Prevent scrolling when dragging the progress bar
   document.body.addEventListener('touchmove', (e) => {
     if (isDragging) {
       e.preventDefault(); // Prevent scrolling
     }
   }, { passive: false });
 
-  // Stop playing music when the page is not visible (background)
   document.addEventListener('visibilitychange', () => {
     if (document.hidden && currentHowl) {
-      currentHowl.pause(); // Pause if the page is hidden
+      currentHowl.pause(); // Pause when page is hidden
     }
   });
 
-  // Search functionality
   searchInput.addEventListener("input", () => {
     const searchTerm = searchInput.value.toLowerCase();
     const filteredSongs = songs.filter(song => 
       song.title.toLowerCase().includes(searchTerm) || 
       song.artist.toLowerCase().includes(searchTerm)
     );
-    renderSongs(filteredSongs); // Render filtered songs based on search input
+    renderSongs(filteredSongs);
 
-    // Show the clear button when there is text in the search bar
     if (searchTerm.trim() !== "") {
       searchClearButton.style.display = "block";
     } else {
@@ -186,26 +183,24 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Clear search functionality
   searchClearButton.addEventListener("click", () => {
     searchInput.value = '';
-    renderSongs(songs); // Render all songs again
-    searchClearButton.style.display = "none"; // Hide the clear button
+    renderSongs(songs);
+    searchClearButton.style.display = "none";
   });
 
-  // Sort functionality
   sortSelect.addEventListener("change", () => {
     const sortBy = sortSelect.value;
     let sortedSongs = [...songs];
 
     if (sortBy === 'alphabetical') {
-      sortedSongs.sort((a, b) => a.title.localeCompare(b.title)); // Sort by title (alphabetical)
+      sortedSongs.sort((a, b) => a.title.localeCompare(b.title));
     } else if (sortBy === 'most-liked') {
-      sortedSongs.sort((a, b) => b.likes - a.likes); // Sort by likes
+      sortedSongs.sort((a, b) => b.likes - a.likes);
     } else if (sortBy === 'most-recent') {
-      sortedSongs.sort((a, b) => new Date(b.date) - new Date(a.date)); // Sort by date
+      sortedSongs.sort((a, b) => new Date(b.date) - new Date(a.date));
     }
 
-    renderSongs(sortedSongs); // Render sorted songs
+    renderSongs(sortedSongs);
   });
 });
