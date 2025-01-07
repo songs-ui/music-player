@@ -18,10 +18,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const songList = document.querySelector(".song-list");
   const searchInput = document.querySelector(".search-bar input");
   const searchClearButton = document.querySelector(".search-clear");
+  const sortSelect = document.querySelector("#sort"); // Corrected selector here
 
-  function renderSongs(songs) {
+  function renderSongs(songsToRender) {
     songList.innerHTML = ''; // Clear the existing songs
-    songs.forEach((song, index) => {
+    songsToRender.forEach((song, index) => {
       const songItem = document.createElement("div");
       songItem.classList.add("song-item");
       songItem.setAttribute("id", `song-${index}`);
@@ -93,6 +94,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       });
 
+      // Retrieve saved progress if available
       if (songProgress[index]) {
         currentHowl.seek(songProgress[index]); // Resume from the saved progress
       }
@@ -165,5 +167,45 @@ document.addEventListener("DOMContentLoaded", () => {
     if (document.hidden && currentHowl) {
       currentHowl.pause(); // Pause if the page is hidden
     }
+  });
+
+  // Search functionality
+  searchInput.addEventListener("input", () => {
+    const searchTerm = searchInput.value.toLowerCase();
+    const filteredSongs = songs.filter(song => 
+      song.title.toLowerCase().includes(searchTerm) || 
+      song.artist.toLowerCase().includes(searchTerm)
+    );
+    renderSongs(filteredSongs); // Render filtered songs based on search input
+
+    // Show the clear button when there is text in the search bar
+    if (searchTerm.trim() !== "") {
+      searchClearButton.style.display = "block";
+    } else {
+      searchClearButton.style.display = "none";
+    }
+  });
+
+  // Clear search functionality
+  searchClearButton.addEventListener("click", () => {
+    searchInput.value = '';
+    renderSongs(songs); // Render all songs again
+    searchClearButton.style.display = "none"; // Hide the clear button
+  });
+
+  // Sort functionality
+  sortSelect.addEventListener("change", () => {
+    const sortBy = sortSelect.value;
+    let sortedSongs = [...songs];
+
+    if (sortBy === 'alphabetical') {
+      sortedSongs.sort((a, b) => a.title.localeCompare(b.title)); // Sort by title (alphabetical)
+    } else if (sortBy === 'most-liked') {
+      sortedSongs.sort((a, b) => b.likes - a.likes); // Sort by likes
+    } else if (sortBy === 'most-recent') {
+      sortedSongs.sort((a, b) => new Date(b.date) - new Date(a.date)); // Sort by date
+    }
+
+    renderSongs(sortedSongs); // Render sorted songs
   });
 });
