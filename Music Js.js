@@ -137,7 +137,7 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   window.dragProgress = function (index, event) {
-    if (!isDragging) return;
+    if (!isDragging || !currentHowl) return;
 
     const player = document.getElementById(`player-${index}`);
     const progressContainer = player.querySelector(".progress-container");
@@ -152,7 +152,8 @@ document.addEventListener("DOMContentLoaded", () => {
     progressBar.style.width = `${percentage * 100}%`;
     progressBall.style.left = `${percentage * 100}%`;
 
-    if (currentHowl) {
+    // Only seek when dragging ends to avoid conflicts with updateProgress
+    if (!event.type.includes("move")) {
       const newTime = percentage * currentHowl.duration();
       currentHowl.seek(newTime);
     }
@@ -200,16 +201,16 @@ document.addEventListener("DOMContentLoaded", () => {
     searchClearButton.style.display = "none";
   });
 
-  sortSelect.addEventListener("change", () => {
-    const sortBy = sortSelect.value;
-    let sortedSongs = [...songs];
+  sortSelect.addEventListener("change", (event) => {
+    const sortBy = event.target.value;
 
-    if (sortBy === "alphabetical") {
-      sortedSongs.sort((a, b) => a.title.localeCompare(b.title));
-    } else if (sortBy === "most-liked") {
-      sortedSongs.sort((a, b) => b.likes - a.likes);
-    } else if (sortBy === "most-recent") {
-      sortedSongs.sort((a, b) => new Date(b.date) - new Date(a.date));
+    let sortedSongs;
+    if (sortBy === "likes") {
+      sortedSongs = [...songs].sort((a, b) => b.likes - a.likes);
+    } else if (sortBy === "date") {
+      sortedSongs = [...songs].sort((a, b) => new Date(b.date) - new Date(a.date));
+    } else {
+      sortedSongs = songs;
     }
 
     renderSongs(sortedSongs);
